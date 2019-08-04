@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.todo_item.*
 class RecyclerListAdapter(
     private val items: MutableList<TodoItem>
 ) : RecyclerView.Adapter<RecyclerListAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, layoutId: Int): ViewHolder {
         val itemView: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.todo_item, parent, false) // Creates a list item view
@@ -22,6 +23,12 @@ class RecyclerListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItem(items[position])  // Populates the list item with to-do data
+    }
+
+    fun setItems(items: List<TodoItem>){
+        this.items.clear()
+        this.items.addAll(items)
+        notifyDataSetChanged() // Must notify recycler view of changes to the data
     }
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
