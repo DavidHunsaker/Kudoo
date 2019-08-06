@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     private fun setUpRecyclerView() = with(recyclerViewTodos) {
         with(recyclerViewTodos) {
-            adapter = RecyclerListAdapter(mutableListOf())   // Populates adapter/list with data
+            adapter = RecyclerListAdapter(mutableListOf(), onRecyclerItemClick())   // Populates adapter/list with data
             layoutManager = LinearLayoutManager(this@MainActivity)
             itemAnimator = DefaultItemAnimator()
             addItemDecoration(
@@ -71,5 +71,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
             })
         }
+    }
+
+    private fun onRecyclerItemClick(): (TodoItem) -> Unit = { todo ->
+        dbScope.launch { viewModel.delete(todo) }
     }
 }
