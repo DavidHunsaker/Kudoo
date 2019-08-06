@@ -43,13 +43,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         viewModel = getViewModel(TodoViewModel::class)
         setUpRecyclerView()
         setUpFloatingActionButton()
-
-        dbScope.launch {
-            repeat(3) {
-                delay(1000)
-                viewModel.add(TodoItem("Celebrate"))
-            }
-        }
     }
 
     private fun setUpRecyclerView() = with(recyclerViewTodos) {
