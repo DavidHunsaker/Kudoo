@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.*
 import android.arch.lifecycle.Observer
+import android.content.Intent
+import com.example.kudoo.view.add.AddTodoActivity
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
@@ -27,12 +29,20 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main
 
+    private fun setUpFloatingActionButton() {
+        fab.setOnClickListener {
+            val intent = Intent(this, AddTodoActivity::class.java)
+            startActivity(intent) // switches to AddTodoActivity
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         viewModel = getViewModel(TodoViewModel::class)
         setUpRecyclerView()
+        setUpFloatingActionButton()
 
         dbScope.launch {
             repeat(3) {
@@ -40,12 +50,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 viewModel.add(TodoItem("Celebrate"))
             }
         }
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
     }
 
     private fun setUpRecyclerView() = with(recyclerViewTodos) {
